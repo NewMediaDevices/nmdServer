@@ -1,0 +1,19 @@
+{
+  "name": "nmdserver",
+  "version": "1.0.0",
+  "description": "server for nmdProject",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoniDB/nmdserver.git"
+  },
+  "author": "Joni De Borger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoniDB/nmdserver/issues"
+  },
+  "homepage": "https://github.com/JoniDB/nmdserver#readme"
+}
