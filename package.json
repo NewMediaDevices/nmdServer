@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/JoniDB/nmdserver/issues"
   },
-  "homepage": "https://github.com/JoniDB/nmdserver#readme"
+  "homepage": "https://github.com/JoniDB/nmdserver#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "mongoose": "^4.6.5"
+  }
 }
