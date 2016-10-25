@@ -12,7 +12,6 @@ mongoose.connect('mongodb://nmd_dummy:nmd_dummy@ds019123.mlab.com:19123/nmd'); /
 var app = express();
 
 //DATA MODELS
-var Bear     = require('./models/bear');
 var Session     = require('./models/session');
 
 //CONFIG
@@ -30,7 +29,7 @@ router.use(function(req, res, next){
 });
 
 router.get('/', function(req,res) {
-  res.json({ message: 'the api works'});
+  res.json({ message: 'try an outpoint, /sessions for example'});
 });
 
 router.route('/sessions')
