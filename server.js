@@ -5,6 +5,7 @@ var path = require("path");
 //
 var express = require('express');
 var bodyParser = require('body-parser');
+var socket = require('socket.io');
 //USE DUMMY data
 var mongoose   = require('mongoose');
 mongoose.connect('mongodb://nmd_dummy:nmd_dummy@ds019123.mlab.com:19123/nmd'); // connect to our database
@@ -57,11 +58,32 @@ router.route('/sessions')
       });
     });
 
+router.route('/sessions/:sessions_id')
+  .get(function(req, res){
+    Session.findById(req.params.sessions_id, function(err, session){
+      if(err) {
+        res.send(err);
+      } else {
+        res.json(session);
+      };
+    })
+  });
+
 app.use('/api', router);
 
-app.listen(app.get('port'), function() {
+var server = app.listen(app.get('port'), function() {
   console.log('Express started on port' + app.get('port'))
 });
+
+// SOCKET FUNCTIONS
+var io = socket(server);
+
+io.sockets.on('connection', newConnection);
+
+function newConnection(socket) {
+  console.log('new conn');
+  console.log(socket);
+};
 
 
 
