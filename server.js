@@ -92,10 +92,11 @@ router.route('/getSentence')
 router.route('/pushSentence')
       .post(function(req, res){
           var sentence = req.body.sentence;
+          sentences.push(sentence);
           console.log(sentence);
           //sentences.push(req.body.sentence);
           //console.log(sentences);
-          res.json({ success : true });
+          res.json({ success : true , sentencesLength : sentences.length, newSentence : sentence });
           /*save it
           session.save(function(err){
             if (err) {
