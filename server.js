@@ -77,7 +77,12 @@ var sentences = [];
 
 router.route('/getSentence')
     .get(function(req, res){
-      res.json({ sentence : "Wow, another great sentence"})
+      if (sentences.length != 0) {
+        var i = sentences.shift();
+        res.json({ success : true, sentence : i });
+      } else {
+        res.json ({ success : false, sentence : 'No more sentences'});
+      }
       /*
       Session.find(function(err, sessions) {
         if (err) {
@@ -92,11 +97,13 @@ router.route('/getSentence')
 router.route('/pushSentence')
       .post(function(req, res){
           var sentence = req.body.sentence;
-          sentences.push(sentence);
-          console.log(sentence);
-          //sentences.push(req.body.sentence);
-          //console.log(sentences);
-          res.json({ success : true , sentencesLength : sentences.length, newSentence : sentence });
+          if (sentences > 100) {
+            res.json({ success : false, sentencesLength : sentences.length, newSentence : 'No sentence added, array is full'});
+          } else {
+            sentences.push(sentence);
+            res.json({ success : true , sentencesLength : sentences.length, newSentence : sentence });
+
+          }
           /*save it
           session.save(function(err){
             if (err) {
