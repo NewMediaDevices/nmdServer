@@ -13,13 +13,16 @@ mongoose.connect('mongodb://nmd_dummy:nmd_dummy@ds019123.mlab.com:19123/nmd'); /
 var app = express();
 
 //DATA MODELS
-var Session     = require('./models/session');
+var Session = require('./models/session');
 
 //CONFIG
 app.set('port', process.env.PORT || 3000);
 //use bodyparser to get POST data
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+//use static
+app.use(express.static('api'));
 
 //ROUTER for API
 var router = express.Router();
@@ -69,6 +72,42 @@ router.route('/sessions/:sessions_id')
     })
   });
 
+/*IMPLEMENTATION FROM AI experiment Session 5*/
+var sentences = [];
+
+router.route('/getSentence')
+    .get(function(req, res){
+      res.json({ sentence : "Wow, another great sentence"})
+      /*
+      Session.find(function(err, sessions) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(sessions);
+        }
+      });
+      */
+    });
+
+router.route('/pushSentence')
+      .post(function(req, res){
+          var sentence = req.body.sentence;
+          console.log(sentence);
+          //sentences.push(req.body.sentence);
+          //console.log(sentences);
+          res.json({ success : true });
+          /*save it
+          session.save(function(err){
+            if (err) {
+              res.send(err);
+            } else {
+              res.json({ message: 'Created new'})
+            }
+          });
+          */
+        });
+
+
 app.use('/api', router);
 
 var server = app.listen(app.get('port'), function() {
@@ -83,8 +122,8 @@ io.sockets.on('connection', newConnection);
 function newConnection(socket) {
   console.log('new conn');
   console.log(socket);
+  socket.emit('connectionStatus', true);
 };
-
 
 
 //AFGESCHREVEN

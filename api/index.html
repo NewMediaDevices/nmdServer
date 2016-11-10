@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>API Index</title>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.4/p5.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.4/addons/p5.dom.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.4/addons/p5.sound.js" type="text/javascript"></script>
+    <script src="sketch.js" type="text/javascript"></script>
+    <script>
+      var socket = io.connect('http://localhost:3000');
+    </script>
+    <style>
+    </style>
+  </head>
+  <body>
+    <h1>API Index</h1>
+    <h2>Sessions</h2>
+    <ol>
+      <li>
+        <h3>GET all sessions</h3>
+        <h4>get-request</h4>
+        <h4>https://nmdserver.herokuapp.com/api/sessions</h4>
+      </li>
+      <li>
+        <h3>POST new session</h3>
+        <h4>POST-request</h4>
+        <h4>https://nmdserver.herokuapp.com/api/sessions</h4>
+        <h4>state: int </h4>
+        <h4>description: String </h4>
+      </li>
+      <li>
+        <h3>GET 1 session</h3>
+        <h4>GET-request</h4>
+        <h4>https://nmdserver.herokuapp.com/api/sessions/:id</h4>
+      </li>
+  </body>
+</html>
