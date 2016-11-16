@@ -19,6 +19,7 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "mongoose": "^4.6.5",
-    "socket.io": "^1.5.1"
+    "socket.io": "^1.5.1",
+    "trumpygrimm": "0.0.2"
   }
 }

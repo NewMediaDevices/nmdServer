@@ -6,6 +6,7 @@ var path = require("path");
 var express = require('express');
 var bodyParser = require('body-parser');
 var socket = require('socket.io');
+var trumpygrimm = require('trumpygrimm');
 //USE DUMMY data
 var mongoose   = require('mongoose');
 mongoose.connect('mongodb://nmd_dummy:nmd_dummy@ds019123.mlab.com:19123/nmd'); // connect to our database
@@ -14,6 +15,10 @@ var app = express();
 
 //DATA MODELS
 var Session = require('./models/session');
+//SET UP MARKOV
+trumpygrimm.createClient();
+trumpygrimm.createMarkov();
+
 
 //CONFIG
 app.set('port', process.env.PORT || 3000);
@@ -77,13 +82,20 @@ var sentences = [];
 
 router.route('/getSentence')
     .get(function(req, res){
+      trumpygrimm.getNewSentence(function(err, result) {
+        if (err) {
+          res.json({success : false, status : err});
+        } else {
+          res.json({success : true, result});
+        }
+      });
+      /*
       if (sentences.length != 0) {
         var i = sentences.shift();
         res.json({ success : true, sentence : i });
       } else {
         res.json ({ success : false, sentence : 'No more sentences'});
       }
-      /*
       Session.find(function(err, sessions) {
         if (err) {
           res.send(err);
@@ -102,7 +114,6 @@ router.route('/pushSentence')
           } else {
             sentences.push(sentence);
             res.json({ success : true , sentencesLength : sentences.length, newSentence : sentence });
-
           }
           /*save it
           session.save(function(err){
