@@ -19,7 +19,6 @@ var Session = require('./models/session');
 trumpygrimm.createClient();
 trumpygrimm.createMarkov();
 
-
 //CONFIG
 app.set('port', process.env.PORT || 3000);
 //use bodyparser to get POST data
@@ -86,6 +85,7 @@ router.route('/getSentence')
         if (err) {
           res.json({success : false, status : err});
         } else {
+          sentences.push(result);
           res.json({success : true, result});
         }
       });
@@ -134,7 +134,7 @@ var server = app.listen(app.get('port'), function() {
 });
 
 // SOCKET FUNCTIONS
-var io = socket(server);
+var io = socket(app);
 
 io.sockets.on('connection', newConnection);
 

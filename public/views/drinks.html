@@ -1,0 +1,12 @@
+<!-- public/views/home.html -->
+
+<div class="jumbotron text-center">
+    <h2>Drinks today: {{ drinks.drinksToday }}</h2>
+
+    <div ng-repeat="drink in drinks">
+      <h3>{{drink.type}}</h3>
+      <h4> Amount: {{drink.quantity}}</h4>
+      <h4> % : {{drink.percentage}}</h4>
+      <p>{{drink.lat}}, {{drink.lon}}</p>
+    </div>
+</div>
