@@ -108,6 +108,20 @@ router.route('/getSentence')
       */
     });
 
+router.route('/getSentenceString')
+        .get(function(req, res){
+          trumpygrimm.getNewSentence(function(err, result) {
+            if (err) {
+              currentSentence = err;
+              res.send(err.string);
+            } else {
+              sentences.push(result);
+              res.send(result.string);
+            }
+          });
+        });
+
+
 router.route('/pushSentence')
       .post(function(req, res){
           var sentence = req.body.sentence;
@@ -127,10 +141,6 @@ router.route('/pushSentence')
           });
           */
         });
-
-function getNewSentence() {
-
-}
 
 app.use('/api', router);
 
