@@ -78,11 +78,13 @@ router.route('/sessions/:sessions_id')
 
 /*IMPLEMENTATION FROM AI experiment Session 5*/
 var sentences = [];
+var currentSentence;
 
 router.route('/getSentence')
     .get(function(req, res){
       trumpygrimm.getNewSentence(function(err, result) {
         if (err) {
+          currentSentence = err;
           res.json({success : false, status : err});
         } else {
           sentences.push(result);
@@ -126,6 +128,9 @@ router.route('/pushSentence')
           */
         });
 
+function getNewSentence() {
+
+}
 
 app.use('/api', router);
 
@@ -134,7 +139,7 @@ var server = app.listen(app.get('port'), function() {
 });
 
 // SOCKET FUNCTIONS
-var io = socket(app);
+var io = socket(server);
 
 io.sockets.on('connection', newConnection);
 
@@ -142,6 +147,16 @@ function newConnection(socket) {
   console.log('new conn');
   console.log(socket);
   socket.emit('connectionStatus', true);
+
+  socket.on('getNewSentence', function() {
+    console.log('new sentence requested');
+    trumpygrimm.getNewSentence(function(result) {
+      if (result) {
+        currentSentence = result;
+        io.emit('newSentence', result );
+      }
+    })
+  });
 };
 
 
