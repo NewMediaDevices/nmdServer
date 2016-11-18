@@ -131,15 +131,6 @@ router.route('/pushSentence')
             sentences.push(sentence);
             res.json({ success : true , sentencesLength : sentences.length, newSentence : sentence });
           }
-          /*save it
-          session.save(function(err){
-            if (err) {
-              res.send(err);
-            } else {
-              res.json({ message: 'Created new'})
-            }
-          });
-          */
         });
 
 app.use('/api', router);
@@ -149,24 +140,51 @@ var server = app.listen(app.get('port'), function() {
 });
 
 // SOCKET FUNCTIONS
+//setup
 var io = socket(server);
-
 io.sockets.on('connection', newConnection);
 
+//all websocket functions
 function newConnection(socket) {
   console.log('new conn');
   console.log(socket);
   socket.emit('connectionStatus', true);
 
+  //request a newSentence through websockets
   socket.on('getNewSentence', function() {
     console.log('new sentence requested');
     trumpygrimm.getNewSentence(function(result) {
       if (result) {
         currentSentence = result;
-        io.emit('newSentence', result );
+        io.emit('newSentence', currentSentence );
       }
     })
   });
+
+  //on "getCurrentSentence"
+  //respond to this socket only
+  //with currentSentence-OBJECT
+  // without creating a new one through websockets
+  socket.on('getCurrentSentence', function() {
+    if(currentSentence) {
+      console.log('current sentence requested');
+      socket.emit('newSentence', currentSentence);
+    } else {
+      //when there is no currentSentence (this is the first request)
+      //create one anyway
+      //push it to ALL connected sockets
+      console.log('create new anyway');
+      //TODO: make decent getNewSentence function
+      trumpygrimm.getNewSentence(function(result) {
+        if (result) {
+          currentSentence = result;
+          io.emit('newSentence', currentSentence );
+        }
+      });
+    };
+  });
+
+
 };
 
 
