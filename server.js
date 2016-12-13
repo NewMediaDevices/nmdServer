@@ -47,6 +47,7 @@ router.route('/calls')
   .post(function(req, res){
       var call = new Call();
       call.description = req.body.description;
+      call.team = req.body.team;
       //save it
       call.save(function(err){
         if (err) {
@@ -195,6 +196,27 @@ function newConnection(socket) {
       }
     })
   });
+
+  //add a call through sockets
+  socket.on('addCall', function(data){
+    var call = new Call();
+    call.description = data.description;
+    call.team = data.team;
+    //save it
+    call.save(function(err){
+      if (err) {
+        socket.emit('error', 'Could not create new call')
+      } else {
+        Call.find(function(err, calls) {
+          if (err) {
+            socket.emit('error', 'No calls available, check your host')
+          } else {
+            socket.emit('getAllCalls', calls);
+          }
+        });
+      }
+    });
+  })
 
   //request a newSentence through websockets
   socket.on('getAllCals', function() {

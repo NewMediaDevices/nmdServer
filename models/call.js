@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 
 var CallSchema = new Schema({
   id: Number,
-  description: String
+  description: String,
+  team: String
 });
 
 module.exports = mongoose.model('Call', CallSchema);
