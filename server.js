@@ -15,6 +15,8 @@ var app = express();
 
 //DATA MODELS
 var Session = require('./models/session');
+var Call = require('./models/call');
+
 //SET UP MARKOV
 trumpygrimm.createClient();
 trumpygrimm.createMarkov();
@@ -40,6 +42,31 @@ router.get('/', function(req,res) {
   res.json({ message: 'try an outpoint, /sessions for example'});
 });
 
+//get or remove calls
+router.route('/calls')
+  .post(function(req, res){
+      var call = new Call();
+      call.description = req.body.description;
+      //save it
+      call.save(function(err){
+        if (err) {
+          res.send(err);
+        } else {
+          res.json({ message: 'Created new'})
+        }
+      });
+    })
+    .get(function(req, res){
+      Call.find(function(err, calls) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(calls);
+        }
+      });
+    });
+
+//session (outdated)
 router.route('/sessions')
   .post(function(req, res){
       var session = new Session();
@@ -150,6 +177,14 @@ function newConnection(socket) {
   console.log(socket);
   socket.emit('connectionStatus', true);
 
+  //answer with all the available api calls
+  Call.find(function(err, calls) {
+    if (err) {
+      socket.emit('error', 'No calls available, check your host')
+    } else {
+      socket.emit('getAllCalls', calls);
+    }
+  });
   //request a newSentence through websockets
   socket.on('getNewSentence', function() {
     console.log('new sentence requested');
@@ -159,6 +194,11 @@ function newConnection(socket) {
         io.emit('newSentence', currentSentence );
       }
     })
+  });
+
+  //request a newSentence through websockets
+  socket.on('getAllCals', function() {
+    console.log('all calls requested');
   });
 
   //on "getCurrentSentence"
