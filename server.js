@@ -246,6 +246,10 @@ function newConnection(socket) {
     };
   });
 
+  socket.on('randomOSC', function(data){
+    io.emit('randomOSC', data);
+  })
+
 
 };
 
