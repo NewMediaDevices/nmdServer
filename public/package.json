@@ -1,0 +1,37 @@
+{
+  "name": "nmdClient",
+  "productName": "NMD Client",
+  "identifier": "com.ehb.nmdclient",
+  "description": "Starter for your Electron application. Out of the box ready for serious stuff.",
+  "version": "0.1.4",
+  "author": "Joni De Borger",
+  "main": "background.js",
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/NewMediaDevices/nmdClient"
+},
+  "config": {
+    "target": "development"
+  },
+  "scripts": {
+    "win": "rm -rf build dist && electron-packager . yeti-desktop --asar --prune --platform=win32 --arch=x64 --version=0.33.0 --icon=resources/windows/icon.ico --out=build"
+  },
+  "dependencies": {
+    "fs-jetpack": "^0.7.0",
+    "angular": "^1.4.7",
+    "angular-animate": "^1.4.7",
+    "angular-aria": "^1.4.7",
+    "angular-material": "1.0.4",
+    "angular-route": "^1.4.7",
+    "osc": "git://github.com/colinbdclark/osc.js.git#gh-65",
+    "socket.io-client": "^1.5.1",
+    "electron-packager": "^8.4.0",
+    "electron-prebuilt": "^0.33.9",
+    "fs-jetpack": "^0.7.0",
+    "gulp": "^3.9.0",
+    "gulp-jade": "^1.1.0",
+    "gulp-less": "^3.0.3",
+    "gulp-util": "^3.0.6"
+  },
+  "license": "MIT"
+}
